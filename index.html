@@ -38,7 +38,12 @@
         margin: 20px;
         border-radius: 8px;
         text-align: center;
-        direction: ltr; /* Error messages are usually English */
+        direction: ltr;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
       }
     </style>
   <script type="importmap">
@@ -65,21 +70,26 @@
       </div>
     </div>
     
-    <!-- Error Handler Script to show startup errors on screen -->
+    <!-- Error Handler Script -->
     <div id="error-display"></div>
     <script>
       window.onerror = function(message, source, lineno, colno, error) {
         const root = document.getElementById('root');
         const errDisplay = document.getElementById('error-display');
         console.error("Global Error:", message, error);
-        if(root) root.style.display = 'none';
+        
+        // Only hide root if it's completely empty or just loading
+        if(root && root.innerText.includes('جار التحميل')) {
+           root.style.opacity = '0.5';
+        }
+        
         if(errDisplay) {
           errDisplay.style.display = 'block';
-          errDisplay.innerHTML = '<h3>Application Error</h3><p>' + message + '</p>';
+          errDisplay.innerHTML = '<strong>Application Error:</strong> ' + message;
         }
       };
     </script>
 
-    <script type="module" src="./index.tsx"></script>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>
